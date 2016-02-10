@@ -1,0 +1,6 @@
+{% extends 'structure/page.html' %}
+
+{% block content %}
+	<h1>{{page_data.title}}</h1>
+	{{ m.tree(page_data.content) }}
+{% endblock %}

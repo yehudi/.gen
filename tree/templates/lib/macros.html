@@ -1,0 +1,80 @@
+{% macro format(txt) %}
+	{{txt|nl2br}}
+{% endmacro %}
+
+{% macro class(text) %}
+	{% if text is defined and not text is empty %} class="{{text}}" {% endif %}
+{% endmacro %}
+
+{% macro special(text, element, class) %}
+	{% import _self as m %}
+	{% if text is iterable %}
+		{% for paragraph in text %}
+			<{{element}} {{m.class(class)}}>{{m.format(paragraph)}}</{{element}}>
+		{% endfor %}
+	{% else %}
+		<{{element}} {{m.class(class)}}>{{m.format(text)}}</{{element}}>
+	{% endif %}
+{% endmacro %}
+
+{% macro ul(text, class) %}
+	{% import _self as m %}
+	<ul {{m.class(class)}}>
+	{% for element in text %}
+		<li>{{m.format(element)}}</li>
+	{% endfor %}
+	</ul>
+{% endmacro %}
+
+{% macro ol(text, class) %}
+	{% import _self as m %}
+	<ul {{m.class(class)}}>
+	{% for element in text %}
+		<li>{{m.format(element)}}</li>
+	{% endfor %}
+	</ul>
+{% endmacro %}
+
+{% macro in_a(obj) %}
+	{% import _self as m %}
+	<a href="/{{obj.slug}}" {{m.class(obj.c)}}>{{obj.label}}</a>
+{% endmacro %}
+
+
+{% macro out_a(obj) %}
+	{% import _self as m %}
+	<a href="{{obj.link}}" {{m.class(obj.c)}}>{{obj.label}}</a>
+{% endmacro %}
+
+{% macro tree(obj) %}
+	{% import _self as m %}
+
+	{% for e in obj %}
+		{% if not e.v is defined %}
+			{{m.special(e, "p")}}
+		{% elseif not e.t is defined %}
+			{{m.p(e.v, e.c)}}
+		{% elseif e.t is same as("ul") %}
+			{{m.ul(e.v, e.c)}}
+		{% elseif e.t is same as("ol") %}
+			{{m.ol(e.v, e.c)}}
+		{% elseif e.t is same as("t") %}
+			{% if e.tag is defined %}
+				<{{e.tag}} {{m.class(e.c)}}>
+			{% endif %}
+
+			{{m.tree(e.v)}}
+
+			{% if e.tag is defined %}
+				</{{e.tag}}>
+			{% endif %}
+		{% elseif e.t is same as("ia") %}
+			{{m.in_a(e.v)}}
+		{% elseif e.t is same as("oa") %}
+			{{m.out_a(e.v)}}
+		{% else %}
+			{{m.special(e.v, e.t, e.c)}}
+		{% endif %}
+
+	{% endfor %}
+{% endmacro %}

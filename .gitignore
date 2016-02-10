@@ -1,0 +1,5 @@
+tree/node_modules/*
+tree/web/design/css/*
+tree/web/design/bower_components/*
+tree/vendor/*
+tree/cache/*

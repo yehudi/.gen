@@ -1,0 +1,7 @@
+.gen/*
+
+node_modules/*
+web/design/css/*
+web/design/bower_components/*
+vendor/*
+cache/*

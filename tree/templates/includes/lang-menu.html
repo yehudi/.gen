@@ -1,0 +1,14 @@
+<ul class="lang-menu">
+	{% set N = conf.site.locales|length - 1 %}
+	{% for i in 0..N %}
+		{% if conf.site.locales[i] is same as(state.locale) %}
+			<li class="active">
+		{% else %}
+			<li>
+		{% endif %}
+			<a href="{{state.slug}}?lang={{conf.site.locales[i]}}" hreflang="{{conf.site.locales[i]}}" title="{{conf.site.locales_names[i]}}">
+				{{conf.site.locales_names[i]}}
+			</a>
+		</li>
+	{% endfor %}
+</ul>
