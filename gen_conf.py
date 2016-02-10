@@ -2,6 +2,8 @@ import sys
 import os
 import json
 
+directory = os.path.dirname(os.path.realpath(__file__))
+
 site = {}
 site['url'] = input("Site url ?")
 site['title'] = site["url"]
@@ -44,7 +46,7 @@ for e in site["locales"]:
 		f.write(json.dumps(locales,sort_keys=True,indent=4, separators=(',', ': ')))
 		f.close()
 
-with open('./gen/default_package.json') as f:    
+with open(directory+'/default_package.json') as f:    
     data = json.load(f)
     with open("package.json", "w") as fi:
     	data["name"] = site["url"]
