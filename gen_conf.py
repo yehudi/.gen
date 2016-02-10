@@ -3,8 +3,8 @@ import os
 import json
 
 site = {}
-site['title'] = input("Site title ?")
 site['url'] = input("Site url ?")
+site['title'] = site["url"]
 site['version'] = "1.0.0"
 site['last-update'] = ""
 site['locales'] = []
@@ -43,3 +43,11 @@ for e in site["locales"]:
 			locales["pages"][p] = {"title" : "Page title", "content" : []}
 		f.write(json.dumps(locales,sort_keys=True,indent=4, separators=(',', ': ')))
 		f.close()
+
+with open('./gen/default_package.json') as f:    
+    data = json.load(f)
+    with open("package.json", "w") as fi:
+    	data["name"] = site["url"]
+    	fi.write(json.dumps(data,sort_keys=True,indent=4, separators=(',', ': ')))
+    	fi.close()
+    f.close()
